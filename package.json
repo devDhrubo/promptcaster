@@ -1,0 +1,182 @@
+{
+  "name": "promptforge",
+  "displayName": "PromptForge",
+  "description": "Boost developer productivity with instant AI prompt shortcuts and customizable templates directly in your editor.",
+  "version": "1.0.0",
+  "publisher": "devDhrubo",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:html",
+    "onLanguage:css",
+    "onLanguage:python",
+    "onLanguage:go",
+    "onLanguage:rust",
+    "onLanguage:java",
+    "onLanguage:cpp",
+    "onCommand:promptForge.openLibrary"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "promptForge.openLibrary",
+        "title": "PromptForge: Open Prompt Library",
+        "category": "PromptForge"
+      },
+      {
+        "command": "promptForge.copyPrompt",
+        "title": "PromptForge: Copy Prompt to Clipboard",
+        "category": "PromptForge"
+      },
+      {
+        "command": "promptForge.review",
+        "title": "PromptForge: Review Code",
+        "category": "PromptForge"
+      },
+      {
+        "command": "promptForge.bug",
+        "title": "PromptForge: Bug Analysis",
+        "category": "PromptForge"
+      },
+      {
+        "command": "promptForge.test",
+        "title": "PromptForge: Generate Tests",
+        "category": "PromptForge"
+      },
+      {
+        "command": "promptForge.explain",
+        "title": "PromptForge: Explain Code",
+        "category": "PromptForge"
+      },
+      {
+        "command": "promptForge.clean",
+        "title": "PromptForge: Clean/Refactor Code",
+        "category": "PromptForge"
+      },
+      {
+        "command": "promptForge.readme",
+        "title": "PromptForge: Generate README.md",
+        "category": "PromptForge"
+      },
+      {
+        "command": "promptForge.optimize",
+        "title": "PromptForge: Optimize Performance",
+        "category": "PromptForge"
+      },
+      {
+        "command": "promptForge.refactor",
+        "title": "PromptForge: Refactor Code",
+        "category": "PromptForge"
+      },
+      {
+        "command": "promptForge.document",
+        "title": "PromptForge: Document Code",
+        "category": "PromptForge"
+      },
+      {
+        "command": "promptForge.security",
+        "title": "PromptForge: Security Audit",
+        "category": "PromptForge"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "promptForge.review",
+        "key": "ctrl+alt+r",
+        "mac": "cmd+alt+r",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "promptForge.bug",
+        "key": "ctrl+alt+b",
+        "mac": "cmd+alt+b",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "promptForge.test",
+        "key": "ctrl+alt+t",
+        "mac": "cmd+alt+t",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "promptForge.explain",
+        "key": "ctrl+alt+e",
+        "mac": "cmd+alt+e",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "promptForge.clean",
+        "key": "ctrl+alt+c",
+        "mac": "cmd+alt+c",
+        "when": "editorTextFocus"
+      }
+    ],
+    "configuration": {
+      "title": "PromptForge",
+      "properties": {
+        "promptForge.customPrompts": {
+          "type": "array",
+          "default": [
+            {
+              "name": "Angular Review",
+              "prompt": "Review this Angular code and look for component structure issues:\n\n{{selectedCode}}\n\nProvide recommendations.",
+              "category": "Frontend"
+            }
+          ],
+          "description": "User custom PromptForge templates with placeholder {{selectedCode}}.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Unique name of your custom prompt."
+              },
+              "prompt": {
+                "type": "string",
+                "description": "The prompt text. Use {{selectedCode}} as variable for selected code."
+              },
+              "category": {
+                "type": "string",
+                "default": "AI Development",
+                "description": "The category for this prompt (Frontend, Backend, DevOps, Testing, Documentation, AI Development)."
+              }
+            },
+            "required": [
+              "name",
+              "prompt"
+            ]
+          }
+        },
+        "promptForge.enableSlashCommands": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable automatic expansion of slash commands (e.g., typing /review) in the editor."
+        },
+        "promptForge.previewBeforeInsertion": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the prompt preview window with copy option before inserting it into the editor."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "node esbuild.js",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
+    "bundle": "node esbuild.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "esbuild": "^0.17.19",
+    "typescript": "^4.9.5"
+  }
+}
