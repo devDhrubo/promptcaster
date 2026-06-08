@@ -1,11 +1,11 @@
 # Changelog
 
-All notable changes to the **PromptForge** extension will be documented in this file.
+All notable changes to the **PromptCaster** extension will be documented in this file.
 
 ## [1.0.0] - 2026-06-07
 
 ### Added
-- **Initial Release** of the PromptForge developer productivity extension.
+- **Initial Release** of the PromptCaster developer productivity extension.
 - **Slash Commands**: Instant expansion of `/review`, `/bug`, `/test`, `/explain`, `/clean`, `/readme`, `/optimize`, `/refactor`, `/document`, `/security` with automatic slash command listener.
 - **Code Injection**: Selective highlight extraction using double-curly `{{selectedCode}}` syntax.
 - **Quick Pick Library**: Categorized lookups corresponding to Frontend, Backend, Testing, DevOps, Documentation, and AI Development buckets.

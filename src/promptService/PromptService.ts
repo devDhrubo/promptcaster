@@ -10,7 +10,7 @@ export class PromptService {
     const defaultPrompts = PromptProvider.getPrompts();
     
     // Retrieve custom prompts from VS Code configuration
-    const config = vscode.workspace.getConfiguration("promptForge");
+    const config = vscode.workspace.getConfiguration("promptCaster");
     const customPrompts = config.get<CustomPrompt[]>("customPrompts") || [];
 
     const mappedCustoms: PromptDefinition[] = customPrompts.map((cp, idx) => {

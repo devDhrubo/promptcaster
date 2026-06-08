@@ -64,7 +64,7 @@ export class PreviewPanel {
 
     // Otherwise, create a new panel.
     const panel = vscode.window.createWebviewPanel(
-      "promptForgePreview",
+      "promptCasterPreview",
       `Prompt Preview: ${promptData.name || "Compiled Prompt"}`,
       column || vscode.ViewColumn.One,
       {
@@ -103,7 +103,7 @@ export class PreviewPanel {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PromptForge Preview</title>
+  <title>PromptCaster Preview</title>
   <style>
     body {
       font-family: var(--vscode-editor-font-family, Consolas, 'Courier New', monospace);
@@ -205,7 +205,7 @@ export class PreviewPanel {
 <body>
   <div class="container">
     <div class="header">
-      <h2>PromptForge Preview: ${nameLabel}</h2>
+      <h2>PromptCaster Preview: ${nameLabel}</h2>
       ${selectedBadgeHtml}
     </div>
 

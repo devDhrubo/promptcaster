@@ -228,7 +228,7 @@ var PromptService = class {
    */
   getMergedPrompts() {
     const defaultPrompts = PromptProvider.getPrompts();
-    const config = vscode.workspace.getConfiguration("promptForge");
+    const config = vscode.workspace.getConfiguration("promptCaster");
     const customPrompts = config.get("customPrompts") || [];
     const mappedCustoms = customPrompts.map((cp, idx) => {
       const sanitizedId = `custom_${cp.name.toLowerCase().replace(/[^a-z0-9]/g, "_")}_${idx}`;
@@ -284,10 +284,10 @@ var ClipboardService = class {
   static async copy(text) {
     try {
       await vscode2.env.clipboard.writeText(text);
-      vscode2.window.showInformationMessage("PromptForge: Copied prompt to clipboard successfully!");
+      vscode2.window.showInformationMessage("PromptCaster: Copied prompt to clipboard successfully!");
       return true;
     } catch (error) {
-      vscode2.window.showErrorMessage(`PromptForge: Failed to copy to clipboard. Error: ${error}`);
+      vscode2.window.showErrorMessage(`PromptCaster: Failed to copy to clipboard. Error: ${error}`);
       return false;
     }
   }
@@ -333,7 +333,7 @@ var _PreviewPanel = class {
       return;
     }
     const panel = vscode3.window.createWebviewPanel(
-      "promptForgePreview",
+      "promptCasterPreview",
       `Prompt Preview: ${promptData.name || "Compiled Prompt"}`,
       column || vscode3.ViewColumn.One,
       {
@@ -363,7 +363,7 @@ var _PreviewPanel = class {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PromptForge Preview</title>
+  <title>PromptCaster Preview</title>
   <style>
     body {
       font-family: var(--vscode-editor-font-family, Consolas, 'Courier New', monospace);
@@ -465,7 +465,7 @@ var _PreviewPanel = class {
 <body>
   <div class="container">
     <div class="header">
-      <h2>PromptForge Preview: ${nameLabel}</h2>
+      <h2>PromptCaster Preview: ${nameLabel}</h2>
       ${selectedBadgeHtml}
     </div>
 
@@ -526,26 +526,26 @@ var CommandManager = class {
    */
   registerAll(context) {
     context.subscriptions.push(
-      vscode4.commands.registerCommand("promptForge.openLibrary", () => {
+      vscode4.commands.registerCommand("promptCaster.openLibrary", () => {
         this._showPromptLibrary();
       })
     );
     context.subscriptions.push(
-      vscode4.commands.registerCommand("promptForge.copyPrompt", () => {
+      vscode4.commands.registerCommand("promptCaster.copyPrompt", () => {
         this._copyQuickPrompt();
       })
     );
     const promptShortcuts = [
-      { cmd: "promptForge.review", id: "review" },
-      { cmd: "promptForge.bug", id: "bug" },
-      { cmd: "promptForge.test", id: "test" },
-      { cmd: "promptForge.explain", id: "explain" },
-      { cmd: "promptForge.clean", id: "clean" },
-      { cmd: "promptForge.readme", id: "readme" },
-      { cmd: "promptForge.optimize", id: "optimize" },
-      { cmd: "promptForge.refactor", id: "refactor" },
-      { cmd: "promptForge.document", id: "document" },
-      { cmd: "promptForge.security", id: "security" }
+      { cmd: "promptCaster.review", id: "review" },
+      { cmd: "promptCaster.bug", id: "bug" },
+      { cmd: "promptCaster.test", id: "test" },
+      { cmd: "promptCaster.explain", id: "explain" },
+      { cmd: "promptCaster.clean", id: "clean" },
+      { cmd: "promptCaster.readme", id: "readme" },
+      { cmd: "promptCaster.optimize", id: "optimize" },
+      { cmd: "promptCaster.refactor", id: "refactor" },
+      { cmd: "promptCaster.document", id: "document" },
+      { cmd: "promptCaster.security", id: "security" }
     ];
     for (const shortcut of promptShortcuts) {
       context.subscriptions.push(
@@ -554,7 +554,7 @@ var CommandManager = class {
         })
       );
     }
-    if (vscode4.workspace.getConfiguration("promptForge").get("enableSlashCommands", true)) {
+    if (vscode4.workspace.getConfiguration("promptCaster").get("enableSlashCommands", true)) {
       context.subscriptions.push(this._registerSlashCommandListener());
     }
   }
@@ -572,7 +572,7 @@ var CommandManager = class {
       };
     });
     const selected = await vscode4.window.showQuickPick(items, {
-      placeHolder: "PromptForge: Search or select an AI prompt template...",
+      placeHolder: "PromptCaster: Search or select an AI prompt template...",
       matchOnDescription: true,
       matchOnDetail: true
     });
@@ -609,7 +609,7 @@ var CommandManager = class {
     if (prompt) {
       this._handlePromptSelected(prompt);
     } else {
-      vscode4.window.showErrorMessage(`PromptForge: Prompt structure '${promptId}' not found!`);
+      vscode4.window.showErrorMessage(`PromptCaster: Prompt structure '${promptId}' not found!`);
     }
   }
   /**
@@ -619,7 +619,7 @@ var CommandManager = class {
     const selectedCode = this._getSelectedCode();
     const expandedResult = this._promptService.expandPrompt(prompt.template, selectedCode);
     expandedResult.name = prompt.name;
-    const previewEnabled = vscode4.workspace.getConfiguration("promptForge").get("previewBeforeInsertion", true);
+    const previewEnabled = vscode4.workspace.getConfiguration("promptCaster").get("previewBeforeInsertion", true);
     if (previewEnabled) {
       PreviewPanel.createOrShow(
         this._extensionUri,
@@ -634,7 +634,7 @@ var CommandManager = class {
       );
     } else {
       vscode4.window.showInformationMessage(
-        `PromptForge: Prompt '${prompt.name}' expanded. What would you like to do?`,
+        `PromptCaster: Prompt '${prompt.name}' expanded. What would you like to do?`,
         "Copy to Clipboard",
         "Insert at Cursor",
         "Open in New Document"
@@ -676,7 +676,7 @@ var CommandManager = class {
       editBuilder.replace(editor.selection, text);
     }).then((success) => {
       if (success) {
-        vscode4.window.showInformationMessage("PromptForge: Inserted prompt text successfully!");
+        vscode4.window.showInformationMessage("PromptCaster: Inserted prompt text successfully!");
       }
     });
   }
@@ -717,7 +717,7 @@ var CommandManager = class {
           const matchingPrompt = prompts.find((p) => p.shortcut === lastWord);
           if (matchingPrompt) {
             vscode4.window.showInformationMessage(
-              `PromptForge: Trigger shortcut matching '${lastWord}' (${matchingPrompt.name})?`,
+              `PromptCaster: Trigger shortcut matching '${lastWord}' (${matchingPrompt.name})?`,
               "Expand Prompt",
               "Dismiss"
             ).then((choice) => {
@@ -746,13 +746,13 @@ var CommandManager = class {
 // src/extension.ts
 var commandManager;
 function activate(context) {
-  console.log('Congratulations, your extension "promptforge" is now active!');
+  console.log('Congratulations, your extension "promptcaster" is now active!');
   commandManager = new CommandManager(context.extensionUri);
   commandManager.registerAll(context);
-  vscode5.window.setStatusBarMessage("PromptForge is Active: Ready for instant prompts!", 5e3);
+  vscode5.window.setStatusBarMessage("PromptCaster is Active: Ready for instant prompts!", 5e3);
 }
 function deactivate() {
-  console.log("PromptForge extension has been deactivated.");
+  console.log("PromptCaster extension has been deactivated.");
 }
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

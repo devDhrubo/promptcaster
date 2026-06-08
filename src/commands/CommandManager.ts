@@ -19,30 +19,30 @@ export class CommandManager {
   public registerAll(context: vscode.ExtensionContext): void {
     // 1. Register the Prompt Library command (Quick Pick menu)
     context.subscriptions.push(
-      vscode.commands.registerCommand("promptForge.openLibrary", () => {
+      vscode.commands.registerCommand("promptCaster.openLibrary", () => {
         this._showPromptLibrary();
       })
     );
 
     // 2. Register Clipboard Copy Command
     context.subscriptions.push(
-      vscode.commands.registerCommand("promptForge.copyPrompt", () => {
+      vscode.commands.registerCommand("promptCaster.copyPrompt", () => {
         this._copyQuickPrompt();
       })
     );
 
     // 3. Register individual prompt shortcut commands
     const promptShortcuts = [
-      { cmd: "promptForge.review", id: "review" },
-      { cmd: "promptForge.bug", id: "bug" },
-      { cmd: "promptForge.test", id: "test" },
-      { cmd: "promptForge.explain", id: "explain" },
-      { cmd: "promptForge.clean", id: "clean" },
-      { cmd: "promptForge.readme", id: "readme" },
-      { cmd: "promptForge.optimize", id: "optimize" },
-      { cmd: "promptForge.refactor", id: "refactor" },
-      { cmd: "promptForge.document", id: "document" },
-      { cmd: "promptForge.security", id: "security" }
+      { cmd: "promptCaster.review", id: "review" },
+      { cmd: "promptCaster.bug", id: "bug" },
+      { cmd: "promptCaster.test", id: "test" },
+      { cmd: "promptCaster.explain", id: "explain" },
+      { cmd: "promptCaster.clean", id: "clean" },
+      { cmd: "promptCaster.readme", id: "readme" },
+      { cmd: "promptCaster.optimize", id: "optimize" },
+      { cmd: "promptCaster.refactor", id: "refactor" },
+      { cmd: "promptCaster.document", id: "document" },
+      { cmd: "promptCaster.security", id: "security" }
     ];
 
     for (const shortcut of promptShortcuts) {
@@ -54,7 +54,7 @@ export class CommandManager {
     }
 
     // 4. Register Workspace slash command listener (Optional editor behavior)
-    if (vscode.workspace.getConfiguration("promptForge").get<boolean>("enableSlashCommands", true)) {
+    if (vscode.workspace.getConfiguration("promptCaster").get<boolean>("enableSlashCommands", true)) {
       context.subscriptions.push(this._registerSlashCommandListener());
     }
   }
@@ -76,7 +76,7 @@ export class CommandManager {
     });
 
     const selected = await vscode.window.showQuickPick(items, {
-      placeHolder: "PromptForge: Search or select an AI prompt template...",
+      placeHolder: "PromptCaster: Search or select an AI prompt template...",
       matchOnDescription: true,
       matchOnDetail: true,
     });
@@ -119,7 +119,7 @@ export class CommandManager {
     if (prompt) {
       this._handlePromptSelected(prompt);
     } else {
-      vscode.window.showErrorMessage(`PromptForge: Prompt structure '${promptId}' not found!`);
+      vscode.window.showErrorMessage(`PromptCaster: Prompt structure '${promptId}' not found!`);
     }
   }
 
@@ -131,7 +131,7 @@ export class CommandManager {
     const expandedResult = this._promptService.expandPrompt(prompt.template, selectedCode);
     expandedResult.name = prompt.name;
 
-    const previewEnabled = vscode.workspace.getConfiguration("promptForge").get<boolean>("previewBeforeInsertion", true);
+    const previewEnabled = vscode.workspace.getConfiguration("promptCaster").get<boolean>("previewBeforeInsertion", true);
 
     if (previewEnabled) {
       PreviewPanel.createOrShow(
@@ -149,7 +149,7 @@ export class CommandManager {
       // If preview is disabled, prompt user for action
       vscode.window
         .showInformationMessage(
-          `PromptForge: Prompt '${prompt.name}' expanded. What would you like to do?`,
+          `PromptCaster: Prompt '${prompt.name}' expanded. What would you like to do?`,
           "Copy to Clipboard",
           "Insert at Cursor",
           "Open in New Document"
@@ -196,7 +196,7 @@ export class CommandManager {
       editBuilder.replace(editor.selection, text);
     }).then((success) => {
       if (success) {
-        vscode.window.showInformationMessage("PromptForge: Inserted prompt text successfully!");
+        vscode.window.showInformationMessage("PromptCaster: Inserted prompt text successfully!");
       }
     });
   }
@@ -247,7 +247,7 @@ export class CommandManager {
             // Found slash command! Suggest triggering extension
             vscode.window
               .showInformationMessage(
-                `PromptForge: Trigger shortcut matching '${lastWord}' (${matchingPrompt.name})?`,
+                `PromptCaster: Trigger shortcut matching '${lastWord}' (${matchingPrompt.name})?`,
                 "Expand Prompt",
                 "Dismiss"
               )
